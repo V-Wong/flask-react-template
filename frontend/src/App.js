@@ -7,7 +7,7 @@ function App() {
     const res = await fetch("/api/");
     const json = await res.json();
     setData(json);
-  });
+  }, []);
 
   return (
     <div>
