@@ -1,0 +1,26 @@
+version: "2.2"
+
+services:
+  backend:
+    image: python:3.8
+    working_dir: /app
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+      - POSTGRES_CONNECTION=postgres://proj:proj@postgres/proj
+    command: bash -c "pip install -r requirements.txt && flask run --host 0.0.0.0"
+    volumes:
+      - ./backend:/app
+    depends_on: 
+      - postgres
+  postgres:
+    image: postgres:13-alpine
+    environment:
+      - POSTGRES_USER=proj
+      - POSTGRES_PASSWORD=proj
+      - POSTGRES_DB=proj
+    volumes:
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
