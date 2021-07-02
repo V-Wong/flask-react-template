@@ -1,0 +1,28 @@
+version: "2.2"
+
+services:
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRES_CONNECTION=postgres://projname:${POSTGRES_PASSWORD}@postgres/projname
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    depends_on:
+      - backend
+  postgres:
+    image: postgres:13-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=projname
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=projname
+    volumes:
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
